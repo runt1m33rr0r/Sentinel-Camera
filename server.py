@@ -1,25 +1,12 @@
 from flask import Flask, Response, request, jsonify
 from camera_opencv import Camera
-from io import BytesIO
-import base64
 from ai import get_encodings, process_image
 from storage import Storage
 from requester import get_user_data
+from utils import decode_image, encode_encoding
 
 
 app = Flask(__name__)
-
-
-def decode_image(encoded):
-    bits = base64.b64decode(encoded)
-    file = BytesIO(bits)
-    return file
-
-
-def encode_encoding(encoding):
-    encoded = base64.b64encode(encoding)
-    string = encoded.decode('utf-8')
-    return string
 
 
 def gen(camera):
@@ -55,9 +42,10 @@ def encode():
 
 
 if __name__ == '__main__':
-    Storage.set_encodings(get_user_data()['encodings'])
-    Storage.set_names(get_user_data()['names'])
+    user_data = get_user_data()
+    Storage.set_encodings(user_data['encodings'])
+    Storage.set_names(user_data['names'])
 
     gen(Camera())
 
-    app.run(host='0.0.0.0', threaded=True)
+    app.run(host='localhost', threaded=True)
