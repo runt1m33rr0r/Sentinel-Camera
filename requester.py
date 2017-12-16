@@ -15,5 +15,6 @@ def get_user_data():
 
 
 def alert(name, image, timestamp):
+    # print(name)
     # alert the backend that a person has been detected
     pass

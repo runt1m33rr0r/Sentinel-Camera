@@ -9,6 +9,7 @@ from requester import alert
 def process_image(image):
     size = 300, 300
     image = Image.open(image)
+    image = image.convert('RGB')
     image.thumbnail(size)
     new = BytesIO()
     image.save(new, 'jpeg')
@@ -39,14 +40,19 @@ def process_video_frame(frame):
         # See if the face is a match for the known face(s)
         matches = face_recognition.compare_faces(Storage.get_encodings(), encoding)
 
+        match_idx = -1
         for i in range(len(matches)):
             if matches[i]:
                 # a known face has been detected
-                name = Storage.get_names()[i]
-                face_names.append(name)
-                alert(name, frame, 'some time')
-            else:
-                face_names.append('Unknown')
+                match_idx = i
+                break
+
+        if match_idx > -1:
+            name = Storage.get_names()[match_idx]
+            face_names.append(name)
+            alert(name, frame, 'some time')
+        else:
+            face_names.append('Unknown')
 
     for (top, right, bottom, left), name in zip(face_locations, face_names):
         # Scale back up face locations since the frame we detected in was scaled to 1/4 size
