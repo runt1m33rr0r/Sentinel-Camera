@@ -27,7 +27,7 @@ def process_video_frame(frame):
     should_alert = False
 
     if len(Storage.get_encodings()) < 1 and len(Storage.get_names()) < 1:
-        return frame
+        return cv2.imencode('.jpg', frame)[1].tobytes()
 
     face_names = []
 
