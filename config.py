@@ -1,0 +1,3 @@
+BASE_CENTRAL_ROUTE = 'http://localhost:1234/'
+ADD_ALERT_ROUTE = BASE_CENTRAL_ROUTE + 'alerts/add'
+GET_DATA_ROUTE = BASE_CENTRAL_ROUTE + 'faces/all'

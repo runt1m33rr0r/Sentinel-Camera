@@ -1,6 +1,7 @@
 import requests
 from utils import decode_encoding, encode_image
 from datetime import datetime
+from config import ADD_ALERT_ROUTE, GET_DATA_ROUTE
 
 
 LAST_NAMES = []
@@ -10,7 +11,7 @@ def get_user_data():
     encodings = []
     names = []
 
-    people = requests.get('http://localhost:1234/faces/all').json()
+    people = requests.get(GET_DATA_ROUTE).json()
     for person in people:
         if person['encoding'] and person['name']:
             encodings.append(decode_encoding(person['encoding']))
@@ -32,7 +33,7 @@ def alert(names, image):
     if should_alert:
         print('alerting')
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        req = requests.post('http://localhost:1234/alerts/add', json={
+        req = requests.post(ADD_ALERT_ROUTE, json={
             "names": names,
             "image": encode_image(image),
             "timestamp": timestamp})
