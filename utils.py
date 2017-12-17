@@ -3,6 +3,11 @@ from io import BytesIO
 import numpy
 
 
+def encode_image(image):
+    string = base64.b64encode(image).decode('utf-8')
+    return string
+
+
 def decode_image(encoded):
     bits = base64.b64decode(encoded)
     file = BytesIO(bits)

@@ -22,5 +22,5 @@ class Camera(BaseCamera):
             _, frame = camera.read()
             frame = process_video_frame(frame)
 
-            # encode as a jpeg image and return it
-            yield cv2.imencode('.jpg', frame)[1].tobytes()
+            # return each frame
+            yield frame

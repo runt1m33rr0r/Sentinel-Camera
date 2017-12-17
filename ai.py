@@ -24,6 +24,8 @@ def get_encodings(file):
 
 
 def process_video_frame(frame):
+    should_alert = False
+
     if len(Storage.get_encodings()) < 1 and len(Storage.get_names()) < 1:
         return frame
 
@@ -50,7 +52,7 @@ def process_video_frame(frame):
         if match_idx > -1:
             name = Storage.get_names()[match_idx]
             face_names.append(name)
-            alert(name, frame, 'some time')
+            should_alert = True
         else:
             face_names.append('Unknown')
 
@@ -68,4 +70,9 @@ def process_video_frame(frame):
         cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
         font = cv2.FONT_HERSHEY_DUPLEX
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+
+    frame = cv2.imencode('.jpg', frame)[1].tobytes()
+    if should_alert:
+        alert(face_names[0], frame)
+
     return frame
