@@ -75,6 +75,6 @@ def process_video_frame(frame):
 
     frame = cv2.imencode('.jpg', frame)[1].tobytes()
     if should_alert:
-        alert(face_names[0], frame)
+        alert(face_names, frame)
 
     return frame
