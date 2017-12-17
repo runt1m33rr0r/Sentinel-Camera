@@ -1,19 +1,19 @@
 class Storage:
-    __encodings = []
-    __names = []
+    _encodings = []
+    _names = []
 
     @staticmethod
     def get_encodings():
-        return Storage.__encodings
+        return Storage._encodings
 
     @staticmethod
     def get_names():
-        return Storage.__names
+        return Storage._names
 
     @staticmethod
     def set_encodings(value):
-        Storage.__encodings = value
+        Storage._encodings = value
 
     @staticmethod
     def set_names(value):
-        Storage.__names = value
+        Storage._names = value

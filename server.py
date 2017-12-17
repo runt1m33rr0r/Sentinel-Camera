@@ -4,6 +4,7 @@ from ai import get_encodings, process_image
 from storage import Storage
 from requester import get_user_data
 from utils import decode_image, encode_encoding
+import threading
 
 
 app = Flask(__name__)
@@ -38,14 +39,19 @@ def encode():
                 'message': 'generated encoding',
                 'encoding': encoded})
 
-    return jsonify({'success': 'false', 'message': 'ivalid data'})
+    return jsonify({'success': 'false', 'message': 'Ivalid data!'})
 
 
-if __name__ == '__main__':
+def update_faces():
+    threading.Timer(5.0, update_faces).start()
     user_data = get_user_data()
     Storage.set_encodings(user_data['encodings'])
     Storage.set_names(user_data['names'])
+    print('updated')
 
+
+if __name__ == '__main__':
+    update_faces()
     gen(Camera())
 
     app.run(host='localhost', threaded=True)

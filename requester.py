@@ -12,8 +12,9 @@ def get_user_data():
 
     people = requests.get('http://localhost:1234/faces/all').json()
     for person in people:
-        encodings.append(decode_encoding(person['encoding']))
-        names.append(person['name'])
+        if person['encoding'] and person['name']:
+            encodings.append(decode_encoding(person['encoding']))
+            names.append(person['name'])
 
     return {'encodings': encodings, 'names': names}
 

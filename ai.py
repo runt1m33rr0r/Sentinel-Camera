@@ -7,10 +7,10 @@ from requester import alert
 
 
 def process_image(image):
-    size = 300, 300
+    # size = 300, 300
     image = Image.open(image)
     image = image.convert('RGB')
-    image.thumbnail(size)
+    # image.thumbnail(size)
     new = BytesIO()
     image.save(new, 'jpeg')
     return new
@@ -25,8 +25,10 @@ def get_encodings(file):
 
 def process_video_frame(frame):
     should_alert = False
+    names = Storage.get_names()
+    encodings = Storage.get_encodings()
 
-    if len(Storage.get_encodings()) < 1 and len(Storage.get_names()) < 1:
+    if len(encodings) < 1 and len(names) < 1:
         return cv2.imencode('.jpg', frame)[1].tobytes()
 
     face_names = []
@@ -40,7 +42,7 @@ def process_video_frame(frame):
 
     for encoding in face_encodings:
         # See if the face is a match for the known face(s)
-        matches = face_recognition.compare_faces(Storage.get_encodings(), encoding)
+        matches = face_recognition.compare_faces(encodings, encoding)
 
         match_idx = -1
         for i in range(len(matches)):
@@ -50,7 +52,7 @@ def process_video_frame(frame):
                 break
 
         if match_idx > -1:
-            name = Storage.get_names()[match_idx]
+            name = names[match_idx]
             face_names.append(name)
             should_alert = True
         else:
