@@ -11,11 +11,14 @@ def get_user_data():
     encodings = []
     names = []
 
-    people = requests.get(GET_DATA_ROUTE).json()
-    for person in people:
-        if person['encoding'] and person['name']:
-            encodings.append(decode_encoding(person['encoding']))
-            names.append(person['name'])
+    try:
+        people = requests.get(GET_DATA_ROUTE).json()
+        for person in people:
+            if person['encoding'] and person['name']:
+                encodings.append(decode_encoding(person['encoding']))
+                names.append(person['name'])
+    except Exception as e:
+        print(str(e))
 
     return {'encodings': encodings, 'names': names}
 
@@ -33,7 +36,11 @@ def alert(names, image):
     if should_alert:
         print('alerting')
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        req = requests.post(ADD_ALERT_ROUTE, json={
-            "names": names,
-            "image": encode_image(image),
-            "timestamp": timestamp})
+
+        try:
+            req = requests.post(ADD_ALERT_ROUTE, json={
+                "names": names,
+                "image": encode_image(image),
+                "timestamp": timestamp})
+        except Exception as e:
+            print(str(e))
